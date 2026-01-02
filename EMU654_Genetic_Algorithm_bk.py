@@ -1,26 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Dec 31 10:13:56 2025
-
-@author: batihan.konuk
-"""
-
-# -*- coding: utf-8 -*-
-"""
-FINAL ROBUST PORTFOLIO OPTIMIZER (ALL METRICS & LIT COMPARISON)
----------------------------------------------------------------
-Methods:
-   1. Hybrid GA (Numba Accelerated + Parallel) -> High Quality (Iter=1000*N)
-   2. Exact MIQP (Gurobi) -> Benchmark
-   3. UEF (Unconstrained Efficient Frontier) -> Reference
-
-Features:
-   - Saves individual result files per dataset (GA & MIQP).
-   - Calculates robust Gap % between GA and MIQP.
-   - Includes full literature comparison (Chang, Deng, ARO) with Times.
-   - Reports MIQP deviation from UEF.
-"""
-
 import os
 import math
 import time
@@ -34,7 +11,7 @@ from numba import njit
 # ------------------------------
 # 0) CONFIG & PATHS
 # ------------------------------
-BASE_DIR = r"C:\Users\batihan.konuk\EMU654_Project"  # Kendi yolunuzu buraya yazın
+BASE_DIR = r"C:\Users\batihan.konuk\EMU654_Project" 
 PORT_FILES = ["port1.txt", "port2.txt", "port3.txt", "port4.txt"]
 
 OUT_DIR = os.path.join(BASE_DIR, "results_final_robust")
@@ -60,13 +37,12 @@ UEF_LAMS = np.linspace(0.0, 1.0, UEF_POINTS)
 # ------------------------------
 # GA Settings (High Quality)
 POP_SIZE = 100
-SEEDS = [42]  # Tek seed yeterli çünkü paralel lambda taraması yapıyoruz
+SEEDS = [42] 
 ITER_MULTIPLIER = 1000  # Literatür standardı: 1000 * N iterasyon
 N_JOBS_GA = -1  # Tüm çekirdekleri kullan
 
 # MIQP Settings
-TIMELIMIT_MIQP = 3600  # Her veri seti için toplam süre bütçesi (saniye) veya lambda başı
-# Not: Burada lambda başına değil, veri seti başına havuz mantığı kullanacağız.
+TIMELIMIT_MIQP = 3600  #Burada lambda başına değil, veri seti başına havuz mantığı kullanacağız.
 MIPGAP_MIQP = 0.0001
 OUTPUTFLAG_GUROBI = 0
 THREADS_GUROBI = 1
@@ -74,7 +50,6 @@ THREADS_GUROBI = 1
 # ------------------------------
 # 3) LITERATURE DATA
 # ------------------------------
-# Veriler makalelerden alınmıştır.
 LIT_DATA = {
     "port1": {
         "Name": "Hang Seng", "N": 31,
@@ -590,4 +565,5 @@ for p, paths in files_map.items():
     g_str = f"{ga_val:.6f}" if isinstance(ga_val, float) else ga_val
     m_str = f"{miqp_val:.6f}" if isinstance(miqp_val, float) else miqp_val
     
+
     print(f"{p:<10} | {g_str:<20} | {m_str:<20}")
